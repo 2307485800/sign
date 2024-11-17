@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lab.sign.mappers.ActivityMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="lab.sign.entity.po.Activity">
+		<!--活动id，唯一，可以自增-->
+		<result column="act_id" property="actId"  />
+		<!--开始时间-->
+		<result column="start_time" property="startTime"  />
+		<!--结束时间-->
+		<result column="end_time" property="endTime"  />
+		<!--发起的人名字-->
+		<result column="start_user" property="startUser"  />
+		<!--发起的内容-->
+		<result column="content" property="content"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 act_id,start_time,end_time,start_user,content
+		 
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.actId != null and query.actId!=''">
+				 and  act_id = #{query.actId}
+			</if>
+			<if test="query.startTime != null and query.startTime!=''">
+				 <![CDATA[ and  start_time=str_to_date(#{query.startTime}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.endTime != null and query.endTime!=''">
+				 <![CDATA[ and  end_time=str_to_date(#{query.endTime}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.startUser != null and query.startUser!=''">
+				 and  start_user = #{query.startUser}
+			</if>
+			<if test="query.content != null and query.content!=''">
+				 and  content = #{query.content}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.actIdFuzzy!= null  and query.actIdFuzzy!=''">
+				 and  act_id like concat('%', #{query.actIdFuzzy}, '%')
+			</if>
+			<if test="query.startTimeStart!= null and query.startTimeStart!=''">
+				 <![CDATA[ and  start_time>=str_to_date(#{query.startTimeStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.startTimeEnd!= null and query.startTimeEnd!=''">
+				 <![CDATA[ and  start_time< date_sub(str_to_date(#{query.startTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.endTimeStart!= null and query.endTimeStart!=''">
+				 <![CDATA[ and  end_time>=str_to_date(#{query.endTimeStart}, '%Y-%m-%d') ]]>
+			</if>
+			<if test="query.endTimeEnd!= null and query.endTimeEnd!=''">
+				 <![CDATA[ and  end_time< date_sub(str_to_date(#{query.endTimeEnd},'%Y-%m-%d'),interval -1 day) ]]>
+			</if>
+			<if test="query.startUserFuzzy!= null  and query.startUserFuzzy!=''">
+				 and  start_user like concat('%', #{query.startUserFuzzy}, '%')
+			</if>
+			<if test="query.contentFuzzy!= null  and query.contentFuzzy!=''">
+				 and  content like concat('%', #{query.contentFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM activity <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM activity <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="lab.sign.entity.po.Activity">
+		 INSERT INTO activity
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.actId != null">
+				 act_id,
+			</if>
+			<if test="bean.startTime != null">
+				 start_time,
+			</if>
+			<if test="bean.endTime != null">
+				 end_time,
+			</if>
+			<if test="bean.startUser != null">
+				 start_user,
+			</if>
+			<if test="bean.content != null">
+				 content,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.actId!=null">
+				 #{bean.actId},
+			</if>
+			<if test="bean.startTime!=null">
+				 #{bean.startTime},
+			</if>
+			<if test="bean.endTime!=null">
+				 #{bean.endTime},
+			</if>
+			<if test="bean.startUser!=null">
+				 #{bean.startUser},
+			</if>
+			<if test="bean.content!=null">
+				 #{bean.content},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="lab.sign.entity.po.Activity">
+		 INSERT INTO activity
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.actId != null">
+				 act_id,
+			</if>
+			<if test="bean.startTime != null">
+				 start_time,
+			</if>
+			<if test="bean.endTime != null">
+				 end_time,
+			</if>
+			<if test="bean.startUser != null">
+				 start_user,
+			</if>
+			<if test="bean.content != null">
+				 content,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.actId!=null">
+				 #{bean.actId},
+			</if>
+			<if test="bean.startTime!=null">
+				 #{bean.startTime},
+			</if>
+			<if test="bean.endTime!=null">
+				 #{bean.endTime},
+			</if>
+			<if test="bean.startUser!=null">
+				 #{bean.startUser},
+			</if>
+			<if test="bean.content!=null">
+				 #{bean.content},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.actId!=null">
+				 act_id = VALUES(act_id),
+			</if>
+			<if test="bean.startTime!=null">
+				 start_time = VALUES(start_time),
+			</if>
+			<if test="bean.endTime!=null">
+				 end_time = VALUES(end_time),
+			</if>
+			<if test="bean.startUser!=null">
+				 start_user = VALUES(start_user),
+			</if>
+			<if test="bean.content!=null">
+				 content = VALUES(content),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="lab.sign.entity.po.Activity">
+		 INSERT INTO activity(
+			 act_id,
+			 start_time,
+			 end_time,
+			 start_user,
+			 content
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.actId},
+				 #{item.startTime},
+				 #{item.endTime},
+				 #{item.startUser},
+				 #{item.content}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="lab.sign.entity.po.Activity">
+		 INSERT INTO activity(
+			 act_id,
+			 start_time,
+			 end_time,
+			 start_user,
+			 content
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.actId},
+				 #{item.startTime},
+				 #{item.endTime},
+				 #{item.startUser},
+				 #{item.content}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			act_id = VALUES(act_id),
+			start_time = VALUES(start_time),
+			end_time = VALUES(end_time),
+			start_user = VALUES(start_user),
+			content = VALUES(content)
+	</insert>
+
+	<!--多条件修改-->
+	<update id="updateByParam" parameterType="lab.sign.entity.query.ActivityQuery">
+		 UPDATE activity
+ 		 <set> 
+			<if test="bean.actId != null">
+				 act_id = #{bean.actId},
+			</if>
+			<if test="bean.startTime != null">
+				 start_time = #{bean.startTime},
+			</if>
+			<if test="bean.endTime != null">
+				 end_time = #{bean.endTime},
+			</if>
+			<if test="bean.startUser != null">
+				 start_user = #{bean.startUser},
+			</if>
+			<if test="bean.content != null">
+				 content = #{bean.content},
+			</if>
+ 		 </set>
+ 		 <include refid="query_condition" />
+	</update>
+
+	<!--多条件删除-->
+	<delete id="deleteByParam">
+		 delete from activity
+ 		 <include refid="query_condition" />
+	</delete>
+
+	<!-- 根据ActId修改-->
+	<update id="updateByActId" parameterType="lab.sign.entity.po.Activity">
+		 UPDATE activity
+ 		 <set> 
+			<if test="bean.startTime != null">
+				 start_time = #{bean.startTime},
+			</if>
+			<if test="bean.endTime != null">
+				 end_time = #{bean.endTime},
+			</if>
+			<if test="bean.startUser != null">
+				 start_user = #{bean.startUser},
+			</if>
+			<if test="bean.content != null">
+				 content = #{bean.content},
+			</if>
+ 		 </set>
+ 		 where act_id=#{actId}
+	</update>
+
+	<!-- 根据ActId删除-->
+	<delete id="deleteByActId">
+		delete from activity where act_id=#{actId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByActId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from activity where act_id=#{actId}
+	</select>
+
+</mapper>

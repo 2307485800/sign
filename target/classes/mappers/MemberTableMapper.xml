@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lab.sign.mappers.MemberTableMapper">
+
+	<!--实体映射-->
+	<resultMap id="base_result_map" type="lab.sign.entity.po.MemberTable">
+		<!--学号-->
+		<result column="student_id" property="studentId"  />
+		<!--姓名-->
+		<result column="name" property="name"  />
+		<!--手机号-->
+		<result column="phone_number" property="phoneNumber"  />
+		<!--班级号-->
+		<result column="class_id" property="classId"  />
+		<!--组号-->
+		<result column="group_id" property="groupId"  />
+		<!--角色-->
+		<result column="role" property="role"  />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="base_column_list">
+		 student_id,name,phone_number,class_id,group_id,
+		 role
+	</sql>
+
+	<sql id="base_condition_filed">
+			<if test="query.studentId != null and query.studentId!=''">
+				 and  student_id = #{query.studentId}
+			</if>
+			<if test="query.name != null and query.name!=''">
+				 and  name = #{query.name}
+			</if>
+			<if test="query.phoneNumber != null and query.phoneNumber!=''">
+				 and  phone_number = #{query.phoneNumber}
+			</if>
+			<if test="query.classId != null and query.classId!=''">
+				 and  class_id = #{query.classId}
+			</if>
+			<if test="query.groupId != null and query.groupId!=''">
+				 and  group_id = #{query.groupId}
+			</if>
+			<if test="query.role != null and query.role!=''">
+				 and  role = #{query.role}
+			</if>
+	</sql>
+	<!-- 通用条件列-->
+	<sql id="base_condition">
+	 <where>
+		 <include refid="base_condition_filed" />
+	 </where>
+	</sql>
+
+	<!-- 通用查询条件列-->
+	<sql id="query_condition">
+	 <where>
+			<include refid="base_condition_filed" />
+			<if test="query.studentIdFuzzy!= null  and query.studentIdFuzzy!=''">
+				 and  student_id like concat('%', #{query.studentIdFuzzy}, '%')
+			</if>
+			<if test="query.nameFuzzy!= null  and query.nameFuzzy!=''">
+				 and  name like concat('%', #{query.nameFuzzy}, '%')
+			</if>
+			<if test="query.phoneNumberFuzzy!= null  and query.phoneNumberFuzzy!=''">
+				 and  phone_number like concat('%', #{query.phoneNumberFuzzy}, '%')
+			</if>
+			<if test="query.classIdFuzzy!= null  and query.classIdFuzzy!=''">
+				 and  class_id like concat('%', #{query.classIdFuzzy}, '%')
+			</if>
+			<if test="query.groupIdFuzzy!= null  and query.groupIdFuzzy!=''">
+				 and  group_id like concat('%', #{query.groupIdFuzzy}, '%')
+			</if>
+			<if test="query.roleFuzzy!= null  and query.roleFuzzy!=''">
+				 and  role like concat('%', #{query.roleFuzzy}, '%')
+			</if>
+	 </where>
+	</sql>
+
+	<!-- 查询集合-->
+	<select id="selectList" resultMap="base_result_map" >
+		 SELECT <include refid="base_column_list" /> FROM member_table <include refid="query_condition" />
+		 <if test="query.orderBy!=null">
+			 order by ${query.orderBy}
+		 </if>
+		 <if test="query.simplePage!=null">
+			 limit #{query.simplePage.start},#{query.simplePage.end}
+		 </if>
+	</select>
+
+	<!-- 查询数量-->
+	<select id="selectCount" resultType="java.lang.Integer" >
+		 SELECT count(1) FROM member_table <include refid="query_condition" />
+	</select>
+
+	<!-- 插入 （匹配有值的字段）-->
+	<insert id="insert" parameterType="lab.sign.entity.po.MemberTable">
+		 INSERT INTO member_table
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="bean.studentId != null">
+				 student_id,
+			</if>
+			<if test="bean.name != null">
+				 name,
+			</if>
+			<if test="bean.phoneNumber != null">
+				 phone_number,
+			</if>
+			<if test="bean.classId != null">
+				 class_id,
+			</if>
+			<if test="bean.groupId != null">
+				 group_id,
+			</if>
+			<if test="bean.role != null">
+				 role,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="bean.studentId!=null">
+				 #{bean.studentId},
+			</if>
+			<if test="bean.name!=null">
+				 #{bean.name},
+			</if>
+			<if test="bean.phoneNumber!=null">
+				 #{bean.phoneNumber},
+			</if>
+			<if test="bean.classId!=null">
+				 #{bean.classId},
+			</if>
+			<if test="bean.groupId!=null">
+				 #{bean.groupId},
+			</if>
+			<if test="bean.role!=null">
+				 #{bean.role},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 插入或者更新 （匹配有值的字段）-->
+	<insert id="insertOrUpdate" parameterType="lab.sign.entity.po.MemberTable">
+		 INSERT INTO member_table
+		 <trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.studentId != null">
+				 student_id,
+			</if>
+			<if test="bean.name != null">
+				 name,
+			</if>
+			<if test="bean.phoneNumber != null">
+				 phone_number,
+			</if>
+			<if test="bean.classId != null">
+				 class_id,
+			</if>
+			<if test="bean.groupId != null">
+				 group_id,
+			</if>
+			<if test="bean.role != null">
+				 role,
+			</if>
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.studentId!=null">
+				 #{bean.studentId},
+			</if>
+			<if test="bean.name!=null">
+				 #{bean.name},
+			</if>
+			<if test="bean.phoneNumber!=null">
+				 #{bean.phoneNumber},
+			</if>
+			<if test="bean.classId!=null">
+				 #{bean.classId},
+			</if>
+			<if test="bean.groupId!=null">
+				 #{bean.groupId},
+			</if>
+			<if test="bean.role!=null">
+				 #{bean.role},
+			</if>
+		 </trim>
+		 on DUPLICATE key update 
+		 <trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.studentId!=null">
+				 student_id = VALUES(student_id),
+			</if>
+			<if test="bean.name!=null">
+				 name = VALUES(name),
+			</if>
+			<if test="bean.phoneNumber!=null">
+				 phone_number = VALUES(phone_number),
+			</if>
+			<if test="bean.classId!=null">
+				 class_id = VALUES(class_id),
+			</if>
+			<if test="bean.groupId!=null">
+				 group_id = VALUES(group_id),
+			</if>
+			<if test="bean.role!=null">
+				 role = VALUES(role),
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 添加 （批量插入）-->
+	<insert id="insertBatch" parameterType="lab.sign.entity.po.MemberTable">
+		 INSERT INTO member_table(
+			 student_id,
+			 name,
+			 phone_number,
+			 class_id,
+			 group_id,
+			 role
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.studentId},
+				 #{item.name},
+				 #{item.phoneNumber},
+				 #{item.classId},
+				 #{item.groupId},
+				 #{item.role}
+			 )
+		 </foreach>
+	</insert>
+
+	<!-- 批量新增修改 （批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="lab.sign.entity.po.MemberTable">
+		 INSERT INTO member_table(
+			 student_id,
+			 name,
+			 phone_number,
+			 class_id,
+			 group_id,
+			 role
+		 )values
+		 <foreach collection="list" item="item" separator=",">
+			 (
+				 #{item.studentId},
+				 #{item.name},
+				 #{item.phoneNumber},
+				 #{item.classId},
+				 #{item.groupId},
+				 #{item.role}
+			 )
+		 </foreach>
+			on DUPLICATE key update 
+			student_id = VALUES(student_id),
+			name = VALUES(name),
+			phone_number = VALUES(phone_number),
+			class_id = VALUES(class_id),
+			group_id = VALUES(group_id),
+			role = VALUES(role)
+	</insert>
+
+	<!--多条件修改-->
+	<update id="updateByParam" parameterType="lab.sign.entity.query.MemberTableQuery">
+		 UPDATE member_table
+ 		 <set> 
+			<if test="bean.studentId != null">
+				 student_id = #{bean.studentId},
+			</if>
+			<if test="bean.name != null">
+				 name = #{bean.name},
+			</if>
+			<if test="bean.phoneNumber != null">
+				 phone_number = #{bean.phoneNumber},
+			</if>
+			<if test="bean.classId != null">
+				 class_id = #{bean.classId},
+			</if>
+			<if test="bean.groupId != null">
+				 group_id = #{bean.groupId},
+			</if>
+			<if test="bean.role != null">
+				 role = #{bean.role},
+			</if>
+ 		 </set>
+ 		 <include refid="query_condition" />
+	</update>
+
+	<!--多条件删除-->
+	<delete id="deleteByParam">
+		 delete from member_table
+ 		 <include refid="query_condition" />
+	</delete>
+
+	<!-- 根据StudentId修改-->
+	<update id="updateByStudentId" parameterType="lab.sign.entity.po.MemberTable">
+		 UPDATE member_table
+ 		 <set> 
+			<if test="bean.name != null">
+				 name = #{bean.name},
+			</if>
+			<if test="bean.phoneNumber != null">
+				 phone_number = #{bean.phoneNumber},
+			</if>
+			<if test="bean.classId != null">
+				 class_id = #{bean.classId},
+			</if>
+			<if test="bean.groupId != null">
+				 group_id = #{bean.groupId},
+			</if>
+			<if test="bean.role != null">
+				 role = #{bean.role},
+			</if>
+ 		 </set>
+ 		 where student_id=#{studentId}
+	</update>
+
+	<!-- 根据StudentId删除-->
+	<delete id="deleteByStudentId">
+		delete from member_table where student_id=#{studentId}
+	</delete>
+
+	<!-- 根据PrimaryKey获取对象-->
+	<select id="selectByStudentId" resultMap="base_result_map" >
+		select <include refid="base_column_list" /> from member_table where student_id=#{studentId}
+	</select>
+
+</mapper>
