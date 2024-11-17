@@ -35,11 +35,6 @@ public class MemberTable implements Serializable {
 	 */
 	private String groupId;
 
-	/**
-	 * 角色
-	 */
-	private String role;
-
 
 	public void setStudentId(String studentId){
 		this.studentId = studentId;
@@ -81,16 +76,8 @@ public class MemberTable implements Serializable {
 		return this.groupId;
 	}
 
-	public void setRole(String role){
-		this.role = role;
-	}
-
-	public String getRole(){
-		return this.role;
-	}
-
 	@Override
 	public String toString (){
-		return "学号:"+(studentId == null ? "空" : studentId)+"，姓名:"+(name == null ? "空" : name)+"，手机号:"+(phoneNumber == null ? "空" : phoneNumber)+"，班级号:"+(classId == null ? "空" : classId)+"，组号:"+(groupId == null ? "空" : groupId)+"，角色:"+(role == null ? "空" : role);
+		return "学号:"+(studentId == null ? "空" : studentId)+"，姓名:"+(name == null ? "空" : name)+"，手机号:"+(phoneNumber == null ? "空" : phoneNumber)+"，班级号:"+(classId == null ? "空" : classId)+"，组号:"+(groupId == null ? "空" : groupId);
 	}
 }

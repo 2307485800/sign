@@ -15,15 +15,13 @@
 		<result column="class_id" property="classId"  />
 		<!--组号-->
 		<result column="group_id" property="groupId"  />
-		<!--角色-->
-		<result column="role" property="role"  />
 	</resultMap>
 
 
 	<!-- 通用查询结果列-->
 	<sql id="base_column_list">
-		 student_id,name,phone_number,class_id,group_id,
-		 role
+		 student_id,name,phone_number,class_id,group_id
+		 
 	</sql>
 
 	<sql id="base_condition_filed">
@@ -41,9 +39,6 @@
 			</if>
 			<if test="query.groupId != null and query.groupId!=''">
 				 and  group_id = #{query.groupId}
-			</if>
-			<if test="query.role != null and query.role!=''">
-				 and  role = #{query.role}
 			</if>
 	</sql>
 	<!-- 通用条件列-->
@@ -71,9 +66,6 @@
 			</if>
 			<if test="query.groupIdFuzzy!= null  and query.groupIdFuzzy!=''">
 				 and  group_id like concat('%', #{query.groupIdFuzzy}, '%')
-			</if>
-			<if test="query.roleFuzzy!= null  and query.roleFuzzy!=''">
-				 and  role like concat('%', #{query.roleFuzzy}, '%')
 			</if>
 	 </where>
 	</sql>
@@ -113,9 +105,6 @@
 			<if test="bean.groupId != null">
 				 group_id,
 			</if>
-			<if test="bean.role != null">
-				 role,
-			</if>
 		 </trim>
 		 <trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="bean.studentId!=null">
@@ -132,9 +121,6 @@
 			</if>
 			<if test="bean.groupId!=null">
 				 #{bean.groupId},
-			</if>
-			<if test="bean.role!=null">
-				 #{bean.role},
 			</if>
 		 </trim>
 	</insert>
@@ -158,9 +144,6 @@
 			<if test="bean.groupId != null">
 				 group_id,
 			</if>
-			<if test="bean.role != null">
-				 role,
-			</if>
 		 </trim>
 		 <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="bean.studentId!=null">
@@ -177,9 +160,6 @@
 			</if>
 			<if test="bean.groupId!=null">
 				 #{bean.groupId},
-			</if>
-			<if test="bean.role!=null">
-				 #{bean.role},
 			</if>
 		 </trim>
 		 on DUPLICATE key update 
@@ -199,9 +179,6 @@
 			<if test="bean.groupId!=null">
 				 group_id = VALUES(group_id),
 			</if>
-			<if test="bean.role!=null">
-				 role = VALUES(role),
-			</if>
 		 </trim>
 	</insert>
 
@@ -212,8 +189,7 @@
 			 name,
 			 phone_number,
 			 class_id,
-			 group_id,
-			 role
+			 group_id
 		 )values
 		 <foreach collection="list" item="item" separator=",">
 			 (
@@ -221,8 +197,7 @@
 				 #{item.name},
 				 #{item.phoneNumber},
 				 #{item.classId},
-				 #{item.groupId},
-				 #{item.role}
+				 #{item.groupId}
 			 )
 		 </foreach>
 	</insert>
@@ -234,8 +209,7 @@
 			 name,
 			 phone_number,
 			 class_id,
-			 group_id,
-			 role
+			 group_id
 		 )values
 		 <foreach collection="list" item="item" separator=",">
 			 (
@@ -243,8 +217,7 @@
 				 #{item.name},
 				 #{item.phoneNumber},
 				 #{item.classId},
-				 #{item.groupId},
-				 #{item.role}
+				 #{item.groupId}
 			 )
 		 </foreach>
 			on DUPLICATE key update 
@@ -252,8 +225,7 @@
 			name = VALUES(name),
 			phone_number = VALUES(phone_number),
 			class_id = VALUES(class_id),
-			group_id = VALUES(group_id),
-			role = VALUES(role)
+			group_id = VALUES(group_id)
 	</insert>
 
 	<!--多条件修改-->
@@ -274,9 +246,6 @@
 			</if>
 			<if test="bean.groupId != null">
 				 group_id = #{bean.groupId},
-			</if>
-			<if test="bean.role != null">
-				 role = #{bean.role},
 			</if>
  		 </set>
  		 <include refid="query_condition" />
@@ -303,9 +272,6 @@
 			</if>
 			<if test="bean.groupId != null">
 				 group_id = #{bean.groupId},
-			</if>
-			<if test="bean.role != null">
-				 role = #{bean.role},
 			</if>
  		 </set>
  		 where student_id=#{studentId}

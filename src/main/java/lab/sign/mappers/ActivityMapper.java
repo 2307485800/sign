@@ -1,13 +1,10 @@
 package lab.sign.mappers;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
  *  数据库操作接口
  */
-
-@Mapper
 public interface ActivityMapper<T,P> extends BaseMapper<T,P> {
 
 	/**

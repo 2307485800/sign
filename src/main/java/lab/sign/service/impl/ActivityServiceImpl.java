@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lab.sign.entity.enums.PageSize;
@@ -23,7 +22,7 @@ import lab.sign.utils.StringTools;
 @Service("activityService")
 public class ActivityServiceImpl implements ActivityService {
 
-	@Autowired
+	@Resource
 	private ActivityMapper<Activity, ActivityQuery> activityMapper;
 
 	/**

@@ -43,13 +43,6 @@ public class MemberTableQuery extends BaseParam {
 
 	private String groupIdFuzzy;
 
-	/**
-	 * 角色
-	 */
-	private String role;
-
-	private String roleFuzzy;
-
 
 	public void setStudentId(String studentId){
 		this.studentId = studentId;
@@ -129,22 +122,6 @@ public class MemberTableQuery extends BaseParam {
 
 	public String getGroupIdFuzzy(){
 		return this.groupIdFuzzy;
-	}
-
-	public void setRole(String role){
-		this.role = role;
-	}
-
-	public String getRole(){
-		return this.role;
-	}
-
-	public void setRoleFuzzy(String roleFuzzy){
-		this.roleFuzzy = roleFuzzy;
-	}
-
-	public String getRoleFuzzy(){
-		return this.roleFuzzy;
 	}
 
 }

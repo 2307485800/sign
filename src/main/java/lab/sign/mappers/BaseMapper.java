@@ -1,22 +1,21 @@
 package lab.sign.mappers;
 
 
- import org.apache.ibatis.annotations.Mapper;
  import org.apache.ibatis.annotations.Param;
 
  import java.util.List;
-@Mapper
-public interface BaseMapper<T, P> {
 
-   /**
-	 * selectList:(根据参数查询集合)
-	 */
-	 List<T> selectList(@Param("query") P p);
+ interface BaseMapper<T, P> {
 
-	/**
-	 * selectCount:(根据集合查询数量)
-	 */
-	 Integer selectCount(@Param("query") P p);
+    /**
+ 	 * selectList:(根据参数查询集合)
+ 	 */
+ 	 List<T> selectList(@Param("query") P p);
+
+ 	/**
+ 	 * selectCount:(根据集合查询数量)
+ 	 */
+ 	 Integer selectCount(@Param("query") P p);
 
 	/**
 	 * insert:(插入)
@@ -36,19 +35,19 @@ public interface BaseMapper<T, P> {
 	 Integer insertBatch(@Param("list") List<T> list);
 
 
-   /**
+    /**
 	 * insertOrUpdateBatch:(批量插入或更新)
 	 */
 	 Integer insertOrUpdateBatch(@Param("list") List<T> list);
 
 
 	 /**
-     * updateByParams:(多条件更新)
-     */
-    Integer updateByParam(@Param("bean") T t,@Param("query") P p);
+      * updateByParams:(多条件更新)
+      */
+     Integer updateByParam(@Param("bean") T t,@Param("query") P p);
 
-    /**
-      * deleteByParam:(多条件删除)
-    */
-    Integer deleteByParam(@Param("query") P p);
+     /**
+       * deleteByParam:(多条件删除)
+     */
+     Integer deleteByParam(@Param("query") P p);
 }
